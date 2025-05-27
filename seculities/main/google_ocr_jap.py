@@ -16,12 +16,14 @@ def japanese_array():
 
         # ファイル存在チェック
         if not images or not os.path.isfile(image):
+            print('画像ファイルが存在しません:', image)
             return [], []
 
         GOOGLE_CLOUD_VISION_API_URL = 'https://vision.googleapis.com/v1/images:annotate?key='
         API_KEY = ''
 
-
+        if not API_KEY:
+            raise RuntimeError('Google Cloud Vision APIキーが設定されていません')
 
         # APIを呼び、認識結果をjson型で返す
         def request_cloud_vison_api(image_base64):
@@ -40,7 +42,11 @@ def japanese_array():
                 }]
             })
             res = requests.post(api_url, data=req_body)
-            return res.json()
+            result = res.json()
+            if 'error' in result:
+                print('OCR APIエラー:', result['error'])
+                return None
+            return result
 
         # 画像読み込み
         def img_to_base64(filepath):
@@ -51,9 +57,15 @@ def japanese_array():
         # 文字認識させたい画像を設定
         img_base64 = img_to_base64(f'{image}')
         result = request_cloud_vison_api(img_base64)
+        if result is None:
+            print('OCR失敗: APIキー未設定またはAPIエラー')
+            return [], []
         # 認識した文字を出力
-        text_r = result["responses"][0]["textAnnotations"][0]["description"]
-
+        try:
+            text_r = result["responses"][0]["textAnnotations"][0]["description"]
+        except Exception as e:
+            print('OCRレスポンスパース失敗:', e)
+            return [], []
 
         # 一文字ずつ文字を抽出する
         by_character = list()
