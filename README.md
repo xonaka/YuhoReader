@@ -1,11 +1,9 @@
 # 有価証券報告書分析ツール「ゆーほー」
 
-<img src="https://jphacks.com/wp-content/uploads/2021/07/JPHACKS2021_ogp.jpg" width="550px"><img src="https://user-images.githubusercontent.com/82380312/139517093-e371b4e3-8041-45d7-a206-e6646e9305f8.png" width="300px">
-
+<img src="https://jphacks.com/wp-content/uploads/2021/07/JPHACKS2021_ogp.jpg" width="550px">
 ## 製品概要
 
 ### 背景(製品開発のきっかけ、課題等）
-先輩からのアドバイスで就活やインターンに有価証券報告書について言及されていたり、企業分析サークルで有価証券報告書の分析をしていたりと耳にする機会はあるものの内容が難しすぎて理解がむずかしかったために、わかりやすく表示できるツールを作ることにしました。
 
 ### 製品説明（具体的な製品の説明）
 有価証券報告書のPDFをドラッグ&ドロップする、またはファイルを選択するだけで、文書読み取り、自動でB/Sシートを生成します。
