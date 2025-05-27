@@ -1,5 +1,5 @@
 Django==3.2.8
-mathfilters
+django-mathfilters
 pdf2image
 opencv-python
 numpy
