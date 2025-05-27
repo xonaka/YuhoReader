@@ -58,6 +58,8 @@ def upload(request):
 # ファイルアップロード完了
 def upload_complete(request):
     jap_ar,num_ar = japanese_array()
+    print('jap_ar:', jap_ar)
+    print('num_ar:', num_ar)
     asset = list()
     liability = list()
     net_asset = list()
