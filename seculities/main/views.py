@@ -263,22 +263,38 @@ def upload_complete(request):
     dic_phrase_description = {key:val for key,val in zip(all,phrase_description)}
     co = 0
 
+    # 部分一致で合計行のキーを探す関数
+    def find_key(dic, target):
+        for k in dic.keys():
+            if target in k.replace(' ', ''):
+                return k
+        return None
+
+    print('asset:', asset)
+    print('asset_num:', asset_num)
+    print('dic:', dic)
+    print('liability:', liability)
+    print('liability_num:', liability_num)
+    print('dic_lia:', dic_lia)
+
     #流動比率
     # 流動比率 ＝ 流動資産／流動負債 × 100
-    流動資産合計 = dic.get('流動資産合計')
-    流動負債合計 = dic_lia.get('流動負債合計')
+    流動資産合計_key = find_key(dic, '流動資産合計')
+    流動負債合計_key = find_key(dic_lia, '流動負債合計')
+    流動資産合計 = dic.get(流動資産合計_key)
+    流動負債合計 = dic_lia.get(流動負債合計_key)
     # 合計値が0またはNoneの場合は自動で合計
     if not 流動資産合計:
         keys = list(dic.keys())
-        if '流動資産' in keys and '流動資産合計' in keys:
+        if '流動資産' in keys and 流動資産合計_key in keys:
             start = keys.index('流動資産') + 1
-            end = keys.index('流動資産合計')
+            end = keys.index(流動資産合計_key)
             流動資産合計 = sum([dic[k] for k in keys[start:end]])
     if not 流動負債合計:
         keys = list(dic_lia.keys())
-        if '流動負債' in keys and '流動負債合計' in keys:
+        if '流動負債' in keys and 流動負債合計_key in keys:
             start = keys.index('流動負債') + 1
-            end = keys.index('流動負債合計')
+            end = keys.index(流動負債合計_key)
             流動負債合計 = sum([dic_lia[k] for k in keys[start:end]])
     if 流動資産合計 is None or 流動負債合計 is None or 流動負債合計 == 0:
         flow_rate = None
@@ -338,6 +354,62 @@ def upload_complete(request):
     else:
         capital_adequacy_ratio = round(純資産合計 / 資産合計 * 100)
 
+
+    # 合計行がなければ自動で合計値を追加
+    # 流動資産合計
+    if '流動資産合計' not in dic and '流動資産' in asset:
+        keys = asset
+        start = keys.index('流動資産') + 1
+        if '流動資産合計' in keys:
+            end = keys.index('流動資産合計')
+        else:
+            end = len(keys)
+        dic['流動資産合計'] = sum([dic.get(k, 0) for k in keys[start:end]])
+    # 流動負債合計
+    if '流動負債合計' not in dic_lia and '流動負債' in liability:
+        keys = liability
+        start = keys.index('流動負債') + 1
+        if '流動負債合計' in keys:
+            end = keys.index('流動負債合計')
+        else:
+            end = len(keys)
+        dic_lia['流動負債合計'] = sum([dic_lia.get(k, 0) for k in keys[start:end]])
+    # 固定資産合計
+    if '固定資産合計' not in dic and '固定資産' in asset:
+        keys = asset
+        start = keys.index('固定資産') + 1
+        if '固定資産合計' in keys:
+            end = keys.index('固定資産合計')
+        else:
+            end = len(keys)
+        dic['固定資産合計'] = sum([dic.get(k, 0) for k in keys[start:end]])
+    # 純資産合計
+    if '純資産合計' not in dic_net and '純資産の部' in net_asset:
+        keys = net_asset
+        start = keys.index('純資産の部') + 1
+        if '純資産合計' in keys:
+            end = keys.index('純資産合計')
+        else:
+            end = len(keys)
+        dic_net['純資産合計'] = sum([dic_net.get(k, 0) for k in keys[start:end]])
+    # 資産合計
+    if '資産合計' not in dic and '資産の部' in asset:
+        keys = asset
+        start = keys.index('資産の部') + 1
+        if '資産合計' in keys:
+            end = keys.index('資産合計')
+        else:
+            end = len(keys)
+        dic['資産合計'] = sum([dic.get(k, 0) for k in keys[start:end]])
+    # 負債合計
+    if '負債合計' not in dic_lia and '負債の部' in liability:
+        keys = liability
+        start = keys.index('負債の部') + 1
+        if '負債合計' in keys:
+            end = keys.index('負債合計')
+        else:
+            end = len(keys)
+        dic_lia['負債合計'] = sum([dic_lia.get(k, 0) for k in keys[start:end]])
 
     return render( request, 'upload_complete.html',context={
     'liability' : liability,
