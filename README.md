@@ -21,6 +21,8 @@
 3. サーバーを起動
 4. Webブラウザでアクセスし、PDFをアップロード
 
+
+
 ## インストール
 
 1. このリポジトリをクローン
@@ -40,6 +42,16 @@ pip install -r requirements.txt
 - pyocr（OCR処理）
 - openpyxl（Excel出力）
 - requests（API通信）
+
+## サーバーの起動
+
+以下のコマンドでDjango開発サーバーを起動できます：
+
+```bash
+python manage.py runserver
+```
+
+起動後、ブラウザで http://localhost:8000/ にアクセスしてください。
 
 ## 開発技術
 
