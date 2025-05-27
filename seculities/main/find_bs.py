@@ -11,6 +11,8 @@ import pyocr.builders
 
 def bs():
     tools = pyocr.get_available_tools()
+    if not tools:
+        return 0, ''  # OCRツールが見つからない場合は空値を返す
     tool = tools[0]
     UPLOAD_DIR = os.path.dirname(os.path.abspath(__file__)) + '/jpg_uploads/'  # アップロードしたファイルを保存するディレクトリ
     files = os.listdir(f"{UPLOAD_DIR}")
