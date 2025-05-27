@@ -77,20 +77,20 @@
   <div class="footer_contents">
     <div class="chart1">
       <h2>流動比率 ＝ 流動資産／流動負債 × 100</h2>
-      <h3>{{flow_rate}}%</h3>
+      <h3>{% if flow_rate is not None %}{{ flow_rate }}%{% else %}データなし{% endif %}</h3>
 
     </div>
     <div class="chart2">
       <h2> 当座比率 ＝ 当座資産／流動負債 × 100</h2>
-      <h3>{{current_rate}}%</h3>
+      <h3>{% if current_rate is not None %}{{ current_rate }}%{% else %}データなし{% endif %}</h3>
     </div>
     <div class="chart3">
       <h2> #固定比率 ＝ 固定資産／自己資本 × 100</h2>
-      <h3>{{fixed_rate}}%</h3>
+      <h3>{% if fixed_rate is not None %}{{ fixed_rate }}%{% else %}データなし{% endif %}</h3>
     </div>
     <div class="chart4">
       <h2>自己資本比率 ＝ 純資産／総資本 × 100</h2>
-      <h3>{{capital_adequacy_ratio }}%</h3>
+      <h3>{% if capital_adequacy_ratio is not None %}{{ capital_adequacy_ratio }}%{% else %}データなし{% endif %}</h3>
     </div>
   </div>
 

@@ -38,13 +38,14 @@ def handle_uploaded_file(f):
     with open(path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-
-    # PDFファイルのパス
+    print('PDF uploads:', os.listdir(UPLOAD_DIR))
     pdf_path = Path(path)
-    #outputのファイルパス
     img_path = Path(UPLOADS_DIR)
-    #この1文で変換されたjpegファイルが、imageホルダー内に作られます。
-    convert_from_path(pdf_path, output_folder=img_path, fmt='jpeg', output_file=pdf_path.stem)
+    try:
+        convert_from_path(pdf_path, output_folder=img_path, fmt='jpeg', output_file=pdf_path.stem)
+    except Exception as e:
+        print('convert_from_path error:', e)
+    print('jpg_uploads after convert:', os.listdir(UPLOADS_DIR))
 
 
 
