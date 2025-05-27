@@ -40,11 +40,11 @@ def handle_uploaded_file(f):
             destination.write(chunk)
 
     # PDFファイルのパス
-    pdf_path = Path(f"{UPLOAD_DIR}\{f.name}")
+    pdf_path = Path(path)
     #outputのファイルパス
-    img_path=Path(f"{UPLOADS_DIR}")
+    img_path = Path(UPLOADS_DIR)
     #この1文で変換されたjpegファイルが、imageホルダー内に作られます。
-    convert_from_path(pdf_path, output_folder=img_path,fmt='jpeg',output_file=pdf_path.stem)
+    convert_from_path(pdf_path, output_folder=img_path, fmt='jpeg', output_file=pdf_path.stem)
 
 
 
