@@ -12,8 +12,7 @@ def japanese_array():
 
         answer,images = bs()
 
-
-        image = f"{UPLOAD_DIR}\{images}"
+        image = os.path.join(UPLOAD_DIR, images)
 
         GOOGLE_CLOUD_VISION_API_URL = 'https://vision.googleapis.com/v1/images:annotate?key='
         API_KEY = ''
