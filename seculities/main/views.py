@@ -267,6 +267,19 @@ def upload_complete(request):
     # 流動比率 ＝ 流動資産／流動負債 × 100
     流動資産合計 = dic.get('流動資産合計')
     流動負債合計 = dic_lia.get('流動負債合計')
+    # 合計値が0またはNoneの場合は自動で合計
+    if not 流動資産合計:
+        keys = list(dic.keys())
+        if '流動資産' in keys and '流動資産合計' in keys:
+            start = keys.index('流動資産') + 1
+            end = keys.index('流動資産合計')
+            流動資産合計 = sum([dic[k] for k in keys[start:end]])
+    if not 流動負債合計:
+        keys = list(dic_lia.keys())
+        if '流動負債' in keys and '流動負債合計' in keys:
+            start = keys.index('流動負債') + 1
+            end = keys.index('流動負債合計')
+            流動負債合計 = sum([dic_lia[k] for k in keys[start:end]])
     if 流動資産合計 is None or 流動負債合計 is None or 流動負債合計 == 0:
         flow_rate = None
     else:
