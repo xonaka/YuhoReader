@@ -1,0 +1,28 @@
+# アップロードファイルを無視
+seculities/main/uploads/*
+seculities/main/jpg_uploads/*
+!seculities/main/uploads/.gitkeep
+!seculities/main/jpg_uploads/.gitkeep
+
+# Pythonキャッシュ
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django DB
+seculities/db.sqlite3
+
+# 環境ファイル
+.env
+
+# ログファイル
+*.log
+
+# 画像・バイナリ
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.pdf 
