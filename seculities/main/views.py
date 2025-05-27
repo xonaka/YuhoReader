@@ -250,9 +250,9 @@ def upload_complete(request):
     cre_ex(all_new,ex_temp0,ex_temp1)
 
 
-    dic = {key:val for key,val in zip(asset,asset_num)}
-    dic_lia = {key:val for key,val in zip(liability,liability_num)}
-    dic_net = {key:val for key,val in zip(net_asset,net_asset_num)}
+    dic = {key: int(val) if str(val).strip().isdigit() else 0 for key, val in zip(asset, asset_num)}
+    dic_lia = {key: int(val) if str(val).strip().isdigit() else 0 for key, val in zip(liability, liability_num)}
+    dic_net = {key: int(val) if str(val).strip().isdigit() else 0 for key, val in zip(net_asset, net_asset_num)}
 
     #語句の説明
     phrase_description = list()
@@ -265,9 +265,12 @@ def upload_complete(request):
 
     #流動比率
     # 流動比率 ＝ 流動資産／流動負債 × 100
-    #もし流動資産合計という語句があれば
-    flow_rate = dic['流動資産合計']/dic_lia['流動負債合計']*100
-    flow_rate = round(flow_rate)
+    流動資産合計 = dic.get('流動資産合計')
+    流動負債合計 = dic_lia.get('流動負債合計')
+    if 流動資産合計 is None or 流動負債合計 is None or 流動負債合計 == 0:
+        flow_rate = None
+    else:
+        flow_rate = round(流動資産合計 / 流動負債合計 * 100)
 
 
     #当座比率
@@ -284,7 +287,7 @@ def upload_complete(request):
         elif(i=='その他1'):
             flag =1
         else:
-            current_term_asset+=dic[i]
+            current_term_asset+=dic.get(i, 0)
 
     flag = 0
     current_liabilities = 0
@@ -296,22 +299,31 @@ def upload_complete(request):
         elif(j=='その他3'):
             flag = 1
         else:
-            current_liabilities+=dic_lia[j]
+            current_liabilities+=dic_lia.get(j, 0)
 
-    current_rate = current_term_asset/current_liabilities*100
-    current_rate = round(current_rate)
+    if current_liabilities == 0:
+        current_rate = None
+    else:
+        current_rate = round(current_term_asset/current_liabilities*100)
 
 
     #長期的な安全性を示す固定比率
     #固定比率 ＝ 固定資産／自己資本 × 100
-    fixed_rate = dic['固定資産合計']/dic_net['純資産合計']*100
-    fixed_rate = round(fixed_rate)
+    固定資産合計 = dic.get('固定資産合計')
+    純資産合計 = dic_net.get('純資産合計')
+    if 固定資産合計 is None or 純資産合計 is None or 純資産合計 == 0:
+        fixed_rate = None
+    else:
+        fixed_rate = round(固定資産合計 / 純資産合計 * 100)
 
 
     #自己資本比率
     #自己資本比率 ＝ 純資産／総資本 × 100
-    capital_adequacy_ratio = dic_net['純資産合計']/dic['資産合計']*100
-    capital_adequacy_ratio = round(capital_adequacy_ratio)
+    資産合計 = dic.get('資産合計')
+    if 純資産合計 is None or 資産合計 is None or 資産合計 == 0:
+        capital_adequacy_ratio = None
+    else:
+        capital_adequacy_ratio = round(純資産合計 / 資産合計 * 100)
 
 
     return render( request, 'upload_complete.html',context={
