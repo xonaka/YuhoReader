@@ -23,10 +23,23 @@
 
 ## インストール
 
+1. このリポジトリをクローン
+2. Python 3.7以上を用意
+3. 依存パッケージを一括インストール
+
 ```bash
-# 依存パッケージのインストール例
 pip install -r requirements.txt
 ```
+
+### 主な依存パッケージ
+- Django==3.2.8（Webフレームワーク）
+- mathfilters（Djangoテンプレート用フィルタ）
+- pdf2image（PDF→画像変換）
+- opencv-python, numpy（画像処理）
+- Pillow（画像処理）
+- pyocr（OCR処理）
+- openpyxl（Excel出力）
+- requests（API通信）
 
 ## 開発技術
 
